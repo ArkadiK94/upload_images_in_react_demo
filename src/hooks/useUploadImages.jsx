@@ -11,7 +11,9 @@ const useUploadImages = ({
     const [imagesName, setImagesName] = useState(initImages || []);
     const [workerAction, setWorkerAction] = useState(null);
     useEffect(() => {
-        const imageUploadWorker = new Worker("../utils/workers/imageUploadWorker.js");
+        const imageUploadWorker = new Worker(new URL("../utils/workers/imageUploadWorker.js", import.meta.url), {
+            type: "module",
+        });
         imageUploadWorker.onmessage = (event) => {
             const newImageBlob = event.data.blobImage;
             const fileName = `${pageName}-${Date.now()}.${newImageBlob.type.split("/")[1]}`;
